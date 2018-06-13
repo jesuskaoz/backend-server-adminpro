@@ -1,0 +1,45 @@
+// Requires
+var jwt = require('jsonwebtoken');
+var SEED = require('../config/config').SEED;
+
+
+
+// =================================================
+// Verificar Token
+// =================================================
+exports.VerificarToken = function(req, res, next) {
+    // =================================================
+    // Codigo para verificar el token por url
+    // =================================================
+
+    /*var token = req.query.token;
+    jwt.verify(token, SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                mensaje: 'Token no valido!',
+                error: err
+            });
+        }
+        req.usuario = decoded.usuario;
+        next();
+
+    });*/
+
+    // =================================================
+    // Codigo para verificar el token por el header
+    // =================================================
+
+    var token = req.headers.authorization;
+    jwt.verify(token, SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                mensaje: 'Token incorrecto',
+                errors: err
+            });
+        }
+        req.usuario = decoded.usuario;
+        next();
+    });
+}
